@@ -2,14 +2,27 @@
 import { Card, CardContent } from "@/components/ui/card";
 import React from "react";
 import { prisma } from "@/lib/db";
+import { getKindeServerSession } from "@kinde-oss/kinde-auth-nextjs/server";
 
-async function getArticles() {
-  const articles = await prisma.article.findMany();
+async function getArticles(orgId: string) {
+  const articles = await prisma.article.findMany({
+    where: {
+      tenantId: orgId,
+    },
+  });
   return articles;
 }
 
 const HomePage = async () => {
-  const articles = await getArticles();
+  const { getOrganization } = getKindeServerSession();
+
+  const organization = await getOrganization();
+
+  if (!organization?.orgCode) {
+    return <div>No organization found</div>;
+  }
+
+  const articles = await getArticles(organization?.orgCode);
   return (
     <div className="p-10">
       <h1 className="text-2xl font-bold">
