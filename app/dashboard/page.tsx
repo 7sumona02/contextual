@@ -23,7 +23,7 @@ const page = async () => {
 
   const articles = await getArticles(organization?.orgCode);
   return (
-    <div className="h-screen container max-w-5xl mx-auto md:p-10 mt-20 p-6">
+    <div className="h-screen max-w-4xl mx-auto md:p-10 mt-20 p-6">
       <div className="flex flex-col gap-10 mt-5">
         {articles.map((article) => (
           <div className='w-full pb-8 border-b border-b-neutral-300 cursor-pointer group' key={article.id}>
